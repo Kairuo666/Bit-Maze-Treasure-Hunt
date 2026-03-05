@@ -8,9 +8,9 @@
 
 int main()
 {
-	// 6x6 grid of randoms
+    // 6x6 grid of randoms
     int i, j;
-	char x[36];
+    char x[36];
     int disp[6][6];
 
     srand(time(NULL));
@@ -21,7 +21,7 @@ int main()
         }
     }
 
-   
+
     printf("The 6x6 matrix:\n\n");
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 6; j++) {
@@ -29,6 +29,8 @@ int main()
         }
         printf("\n");
     }
+
+    printf("Hello world");
     return 0;
 }
 
