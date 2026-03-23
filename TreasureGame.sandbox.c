@@ -7,16 +7,25 @@
 
 int main()
 {
-
-    // Password
+    // Bitwise initialisation
+    int i, j;
+    char x[36];
+    int disp[6][6];
+    char shown[6][6];
+    // Password initialisation
     char password[] = "12345";
     char userinput[10];
+    // Maze
+    int loc;
 
-    printf("This game is protected by a 5 character string password,\n\n");
+
+
+    // Password
+    printf("[ this game is protected by a 5 character string password ]\n\n");
 
     while (1)
     {
-        printf("Please enter the password to proceed: ");
+        printf("You need to enter the password to proceed: ");
         scanf_s("%9s", userinput, (unsigned)_countof(userinput)); // scanf_s always needs a buffer size
 
         printf("\n");
@@ -30,18 +39,12 @@ int main()
             printf("Access Denied.\n\n");
         }
     }
-    
-
-    int i, j;
-    char x[36];
-    int disp[6][6];
-    char shown[6][6];
 
     srand((unsigned int)time(NULL));
 
 
-    // Maze
-  // 
+  // Bitwise Operation
+ 
   // T = trap
   // G = gold
   // . = unknown tile
@@ -54,9 +57,9 @@ int main()
             int goldAmount = rand() % 16;   // bits = 4–7 (ranging with gold amount 1–15)
 
             int treasure = 0;
-            treasure |= trap << 0;              // bit 0
-            treasure |= Gold << 1;           // bit 1
-            treasure |= (goldAmount & 0xF) << 4; // bits 4–7
+            treasure |= trap << 0;              // bit = 0
+            treasure |= Gold << 1;           // bit = 1
+            treasure |= (goldAmount & 0xF) << 4; // bits = 4–7 (ranging with gold amount 1-15)
 
             disp[i][j] = treasure;
         }
@@ -79,6 +82,9 @@ int main()
         }
     }
 
+
+    // Maze functionality
+
     while (1)
     {
         // Print player map
@@ -93,12 +99,12 @@ int main()
         // Ask player for a location
         int loc;
         printf("\n");
-        printf("(remember, the list starts from 0!)");
+        printf("(reminder, the list starts from 0)");
         printf("\nenter the number of the tile to reveal it (type -1 to quit): ");
         scanf_s("%d", &loc);
 
         if (loc == -1) {
-            printf("Exiting game.\n");
+            printf("game ended.\n");
             break;
         }
 
@@ -127,7 +133,7 @@ int main()
         }
         else {
             shown[row][col] = 'X';
-            printf("Nothing here. Just an empty tile.\n");
+            printf("empty tile.\n");
         }
     }
 }
