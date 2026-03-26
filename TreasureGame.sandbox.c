@@ -17,6 +17,10 @@ int main()
     char userinput[10];
     // Maze
     int loc;
+    // Multiplayer
+    int score1 = 0, score2 = 0;
+    int currentPlayer = 1;
+    char name1[20], name2[20];
 
 
 
@@ -41,6 +45,19 @@ int main()
     }
 
     srand((unsigned int)time(NULL));
+
+    //Multiplayer
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    printf("Enter Player 1 name: ");
+    fgets(name1, sizeof(name1), stdin);
+    name1[strcspn(name1, "\n\n")] = 0; // Removes the newline character
+
+    printf("Enter Player 2 name: ");
+    fgets(name2, sizeof(name2), stdin);
+    name2[strcspn(name2, "\n")] = 0;
+    printf("Welcome %s and %s!\n", name1, name2);
 
 
   // Bitwise Operation
@@ -82,10 +99,20 @@ int main()
         }
     }
 
+    // Multiplayer turns
+   /* while (score1 < 50 && score2 < 50)
+    {
+        printf("\n--- %s's Turn ---\n", currentPlayer == 1 ? name1 : name2);
+
+        printf("Scores: %s = %d | %s = %d\n", name1, score1, name2, score2);
+
+        currentPlayer = (currentPlayer == 1) ? 2 : 1;
+    }*/
+
 
     // Maze functionality
 
-    while (1)
+    while (/*1*/score1 < 50 && score2 < 50) // game ends after a player scores 50
     {
         // Print player map
         printf("\nPlayer Map:\n\n");
@@ -95,7 +122,9 @@ int main()
             }
             printf("\n");
         }
-
+        
+        printf("\n--- %s's Turn ---\n", currentPlayer == 1 ? name1 : name2); // Display players turn
+        printf("Scores: %s = %d | %s = %d\n", name1, score1, name2, score2); // Display score
         // Ask player for a location
         int loc;
         printf("\n");
@@ -115,19 +144,24 @@ int main()
             printf("Invalid location.\n");
             continue;
         }
+        currentPlayer = (currentPlayer == 1) ? 2 : 1; // Toggle turn: if 1, change to 2. If 2, change to 1.
 
         // Decode treasure
         int treasure = disp[row][col];
         int trap = (treasure >> 0) & 1;
         int hasGold = (treasure >> 1) & 1;
         int goldAmount = (treasure >> 4) & 0xF;
+        int turnTotal = 0;
 
         // Update visible map
+
         if (trap) {
+            turnTotal -= 1;
             shown[row][col] = 'T';
             printf("You found a TRAP at (%d,%d)!\n", row, col);
         }
         else if (hasGold) {
+            turnTotal += goldAmount;
             shown[row][col] = 'G';
             printf("You found GOLD (%d pieces) at (%d,%d)!\n", goldAmount, row, col);
         }
@@ -135,6 +169,8 @@ int main()
             shown[row][col] = 'X';
             printf("empty tile.\n");
         }
+        if (currentPlayer == 1) score1 += turnTotal;
+        else score2 += turnTotal;
     }
 }
 
